@@ -1,0 +1,17 @@
+$TTL    604800
+@       IN      SOA  trip-dev.tuff.local. root.tuff.local. (
+                        2023051001 ; serial
+                        3600        ; refresh
+                        600         ; retry
+                        604800      ; expire
+                        600         ; minimum
+                        )
+
+                  IN      NS      trip-dev.tuff.local.
+trip-dev          IN      A       10.10.221.254
+gw                IN      CNAME   trip-dev.tripko.local.
+
+trip-ocp          IN      A       10.10.221.5
+api.tripko        IN      CNAME   trip-ocp.tuff.local.
+api-int.tripko    IN      CNAME   trip-ocp.tuff.local.
+*.apps.tripko     IN      CNAME   trip-ocp.tuff.local.

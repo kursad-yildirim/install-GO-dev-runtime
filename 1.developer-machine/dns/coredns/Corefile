@@ -1,0 +1,9 @@
+.:53 {
+    log
+    forward . 8.8.8.8
+}
+tuff.local:53 {
+        log
+        errors
+        file /zones/tuff.local
+}

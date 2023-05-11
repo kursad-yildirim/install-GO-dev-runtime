@@ -1,0 +1,47 @@
+#!/bin/bash
+clear
+CORE_DIR="/etc/coredns"
+ZONE_DIR="/zones"
+WORKDIR="/opt/tuff/dns/coredns"
+TOKEN="coredns"
+IMAGE="docker.io/coredns/coredns:latest"
+IP=10.10.221.254
+
+startTuffDNS () {
+echo "Start Tuff DNS"
+podman run -d --name $TOKEN \
+-p $IP:53:53/udp -p $IP:53:53/tcp \
+-v $WORKDIR/Corefile:$CORE_DIR/Corefile \
+-v $WORKDIR/tuff.local:$ZONE_DIR/tuff.local \
+$IMAGE -conf /etc/coredns/Corefile
+}
+
+stopTuffDNS () {
+echo "Stop Tuff DNS"
+podman stop coredns
+podman rm coredns
+}
+
+checkTuffDNS () {
+echo "OK!"
+}
+
+case "$1" in
+        start)
+                startTuffDNS
+                ;;
+        stop)
+                stopTuffDNS
+                ;;
+        status)
+                checkTuffDNS
+                ;;
+        restart)
+                startTuffDNS
+                stopTuffDNS
+                ;;
+        *)
+            echo $"Usage: $0 {start|stop|restart|status}"
+            exit 1
+ 
+esac

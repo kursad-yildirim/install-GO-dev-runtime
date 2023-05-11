@@ -1,0 +1,11 @@
+[Unit]
+Description=tuffnetwork
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/opt/tuff/network/bin/tuff-network start
+ExecStop=/opt/tuff/network/bin/tuff-network stop
+
+[Install]
+WantedBy=multi-user.target

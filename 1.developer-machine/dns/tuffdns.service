@@ -1,0 +1,11 @@
+[Unit]
+Description=tuffDNS
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/opt/tuff/dns/bin/tuff-dns start
+ExecStop=/opt/tuff/dns/bin/tuff-dns stop
+
+[Install]
+WantedBy=multi-user.target

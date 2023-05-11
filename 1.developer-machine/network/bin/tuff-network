@@ -1,0 +1,42 @@
+#!/bin/bash
+
+startTuffNetwork () {
+echo "Start Tuff Network"
+iptables -t nat -I POSTROUTING -s 10.10.221.5 -j SNAT --to-source 192.168.1.141
+iptables -t nat -I PREROUTING -d 192.168.1.141 -j DNAT --to-destination 10.10.221.5
+iptables -I INPUT -d 192.168.1.141 -j DROP
+iptables -I INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+}
+
+stopTuffNetwork () {
+echo "Stop Tuff Network"
+iptables -t nat -D POSTROUTING -s 10.10.221.5 -j SNAT --to-source 192.168.1.141
+iptables -t nat -D PREROUTING -d 192.168.1.141 -j DNAT --to-destination 10.10.221.5
+iptables -D INPUT -d 192.168.1.141 -j DROP
+iptables -D INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+}
+
+checkTuffNetwork () {
+echo "OK!"
+}
+
+case "$1" in
+        start)
+                startTuffNetwork
+                ;;
+        stop)
+                stopTuffNetwork
+                ;;
+        status)
+                checkTuffNetwork
+                ;;
+        restart)
+                startTuffNetwork
+                stopTuffNetwork
+                ;;
+        *)
+            echo $"Usage: $0 {start|stop|restart|status}"
+            exit 1
+ 
+esac
